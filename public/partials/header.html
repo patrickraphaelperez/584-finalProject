@@ -1,4 +1,4 @@
-<nav ng-controller="HeaderCtrl" class="navbar navbar-default navbar-static-top">
+<nav ng-controller="HeaderCtrl" class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
       <button type="button" data-toggle="collapse" data-target="#navbar" class="navbar-toggle collapsed">
@@ -7,12 +7,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand">Project name</a>
+      <a href="/" class="navbar-brand">Artistry</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
-        <li ng-class="{ active: isActive('/contact')}"><a href="/contact">Contact</a></li>
+        <li ng-class="{ active: isActive('/browse')}"><a href="/browse">Browse</a></li>
+        <li ng-class="{ active: isActive('/about')}"><a href="/about">About</a></li>
       </ul>
       <ul ng-if="isAuthenticated()" class="nav navbar-nav navbar-right">
         <li class="dropdown">
