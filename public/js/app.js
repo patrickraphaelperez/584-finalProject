@@ -50,6 +50,7 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       .when('/stanleylau/social', {
         templateUrl: 'partials/social.html'
       })
+  
       .otherwise({
         templateUrl: 'partials/404.html'
       });
