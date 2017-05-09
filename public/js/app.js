@@ -44,9 +44,12 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       .when('/stanleylau', {
         templateUrl: 'partials/stanleylau.html'
       })
-        .when('/purchase', {
-            templateUrl: 'partials/purchase.html'
-        })
+      .when('/stanleylau/purchase', {
+          templateUrl: 'partials/purchase.html'
+      })
+      .when('/stanleylau/social', {
+        templateUrl: 'partials/social.html'
+      })
       .otherwise({
         templateUrl: 'partials/404.html'
       });
