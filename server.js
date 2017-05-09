@@ -22,7 +22,8 @@ var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
 var app = express();
-
+var server = require('http').Server(app);
+var io = require('socket.io').listen(server);
 
 mongoose.connect(process.env.MONGODB);
 mongoose.connection.on('error', function() {
@@ -138,7 +139,13 @@ if (app.get('env') === 'production') {
   });
 }
 
-app.listen(app.get('port'), function() {
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
+server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
