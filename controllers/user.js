@@ -161,7 +161,7 @@ exports.unlink = function(req, res, next) {
         break;
       case 'github':
           user.github = undefined;
-        break;      
+        break;
       default:
         return res.status(400).send({ msg: 'Invalid OAuth Provider' });
     }
@@ -215,7 +215,7 @@ exports.forgotPost = function(req, res, next) {
       var mailOptions = {
         to: user.email,
         from: 'support@yourdomain.com',
-        subject: '✔ Reset your password on Mega Boilerplate',
+        subject: '✔ Reset your password on Artistry',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
         'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -269,7 +269,7 @@ exports.resetPost = function(req, res, next) {
       var mailOptions = {
         from: 'support@yourdomain.com',
         to: user.email,
-        subject: 'Your Mega Boilerplate password has been changed',
+        subject: 'Your Artistry password has been changed',
         text: 'Hello,\n\n' +
         'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };

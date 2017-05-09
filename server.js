@@ -22,7 +22,8 @@ var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
 var app = express();
-
+var server = require('http').Server(app);
+var io = require('socket.io').listen(server);
 
 mongoose.connect(process.env.MONGODB);
 mongoose.connection.on('error', function() {
@@ -59,64 +60,6 @@ app.use(function(req, res, next) {
   }
 });
 
-//PAYPAL - to create a PayPal paymen, set payment_method to paypal under payer
-var payReq = JSON.stringify({
-    intent:'sale',
-    payer:{
-        payment_method:'paypal'
-    },
-    redirect_urls:{
-        return_url:'http://localhost:3000/purchase'
-    },
-    transactions:[{
-        amount:{
-            total:'10',
-            currency:'USD'
-        },
-        description:'This is the payment transaction description.'
-    }]
-});
-
-//Initialize the payment and redirect user
-paypal.payment.create(payReq, function(error, payment){
-    var links = {};
-
-    if(error){
-        console.error(JSON.stringify(error));
-    } else {
-        // Capture HATEOAS links
-        payment.links.forEach(function(linkObj){
-            links[linkObj.rel] = {
-                href: linkObj.href,
-                method: linkObj.method
-            };
-        })
-
-        // If redirect url present, redirect user
-        if (links.hasOwnProperty('approval_url')){
-            //REDIRECT USER TO links['approval_url'].href
-        } else {
-            console.error('no redirect URI present');
-        }
-    }
-});
-
-//Complete the payment
-var paymentId = req.query.paymentId;
-var payerId = { payer_id: req.query.PayerID };
-
-paypal.payment.execute(paymentId, payerId, function(error, payment){
-    if(error){
-        console.error(JSON.stringify(error));
-    } else {
-        if (payment.state == 'approved'){
-            console.log('payment completed successfully');
-        } else {
-            console.log('payment not successful');
-        }
-    }
-});
-
 app.post('/contact', contactController.contactPost);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
@@ -138,7 +81,13 @@ if (app.get('env') === 'production') {
   });
 }
 
-app.listen(app.get('port'), function() {
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
+server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
